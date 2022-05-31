@@ -1,18 +1,14 @@
-name: CICD
+name: Deploy
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 jobs:
-  deploy:
-    uses: ./.github/workflows/setup.yml
+  deploy-frontend:
     steps:
-      - run: npm run build
-      - name: Deploy
-        uses: crazy-max/ghaction-github-pages@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy to Github Pages
+        uses: ./.github/actions/deploy-frontend
         with:
-          target_branch: gh-pages
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+          gh-token: ${{ secrets.REPO_TOKEN }}

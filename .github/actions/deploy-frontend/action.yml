@@ -1,0 +1,23 @@
+name: Deploy Frontend
+description: "Build and deploy the app"
+inputs:
+  gh-token:
+    required: true
+    description: "Github token"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version:
+          - 18.x
+    - run: npm install
+    - run: npm run build
+    - name: Deploy
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: dist
+      env:
+        GITHUB_TOKEN: ${{ inputs.gh-token }}
